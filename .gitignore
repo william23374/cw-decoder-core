@@ -1,0 +1,36 @@
+# Secrets / local config
+.gitsh.conf
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Generated audio / reports
+*.wav
+!tests/fixtures/*.wav
+reports/
+tmp/
+.cache/
