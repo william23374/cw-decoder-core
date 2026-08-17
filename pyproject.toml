@@ -41,7 +41,7 @@ dev = [
 cw-decoder = "cw_decoder.decoder:main"
 
 [project.urls]
-Homepage = "https://github.com/cw-decoder/cw-decoder-core"
+Homepage = "https://github.com/william23374/cw-decoder-core"
 
 [tool.setuptools.packages.find]
 include = ["cw_decoder*"]
