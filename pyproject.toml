@@ -50,3 +50,6 @@ include = ["cw_decoder*"]
 testpaths = ["tests"]
 pythonpath = ["."]
 addopts = "-q"
+markers = [
+  "real_audio: downloads fixtures from GitHub Releases (needs network)",
+]

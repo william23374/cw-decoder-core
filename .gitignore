@@ -30,7 +30,10 @@ htmlcov/
 
 # Generated audio / reports
 *.wav
+*.m4a
 !tests/fixtures/*.wav
+fixtures/*.wav
+fixtures/*.m4a
 reports/
 tmp/
 .cache/

@@ -26,19 +26,32 @@ print(result["text"], result["wpm"])
 ## Tests (CI)
 
 ```bash
-pytest
+# Unit + synthetic CW (no network)
+pytest -m "not real_audio"
+
+# Download LIVE HF QRQ sample from GitHub Releases and decode
+pytest -v -m real_audio
 ```
 
-CI synthesizes clean CW audio on the fly — no large fixtures required.
+**Real-audio fixture** (Release `fixtures-v1`):
+
+- Source: *HF QRQ CW QSO between W5UXH & K6KX - recorded LIVE off the air.m4a*
+- Assets: https://github.com/william23374/cw-decoder-core/releases/tag/fixtures-v1
+- CI job **Real HF QRQ (download + decode)** downloads the 45 s WAV excerpt and runs `decode_v13`
+
+From the parent monorepo:
+
+```bash
+./run-tests.sh          # synth/unit
+./run-tests.sh real     # download + decode
+./run-tests.sh ci       # push and wait for Actions
+```
 
 ## Layout
 
 ```
 cw_decoder/          # decoder package
-  decoder.py         # V13 offline path
-  dsp.py / envelope / threshold / segmentation
-  pll.py / agc.py / integrator.py
-  corrector.py / morse.py / realtime.py
-tests/               # self-contained synth + unit tests
-.github/workflows/   # GitHub Actions
+tests/               # synth unit tests + real_audio download test
+fixtures/README.md   # points at GitHub Release assets (binaries not in git)
+.github/workflows/   # unit matrix + real-audio job
 ```
