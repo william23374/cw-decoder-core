@@ -57,6 +57,7 @@ jobs:
         env:
           CW_FIXTURE_REPO: william23374/cw-decoder-core
           CW_FIXTURE_TAG: fixtures-v1
-          CW_FIXTURE_ASSET: w5uxh_k6kx_hf_qrq_45s.wav
+          CW_FIXTURE_ASSET: w5uxh_k6kx_hf_qrq_45s_bp700.wav
           CW_FIXTURE_CACHE: ${{ runner.temp }}/cw-fixtures
         run: pytest -v -m real_audio --tb=short
+        timeout-minutes: 15

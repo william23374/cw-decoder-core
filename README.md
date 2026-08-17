@@ -37,7 +37,7 @@ pytest -v -m real_audio
 
 - Source: *HF QRQ CW QSO between W5UXH & K6KX - recorded LIVE off the air.m4a*
 - Assets: https://github.com/william23374/cw-decoder-core/releases/tag/fixtures-v1
-- CI job **Real HF QRQ (download + decode)** downloads the 45 s WAV excerpt and runs `decode_v13`
+- CI downloads `w5uxh_k6kx_hf_qrq_45s_bp700.wav` (45 s excerpt, band-passed around the ~700 Hz tone) and runs `decode_v13`
 
 From the parent monorepo:
 

@@ -14,7 +14,7 @@ from cw_decoder import decode_v13
 REPO = os.environ.get("CW_FIXTURE_REPO", "william23374/cw-decoder-core")
 TAG = os.environ.get("CW_FIXTURE_TAG", "fixtures-v1")
 # Prefer short WAV for CI speed; allow override to full m4a.
-ASSET = os.environ.get("CW_FIXTURE_ASSET", "w5uxh_k6kx_hf_qrq_45s.wav")
+ASSET = os.environ.get("CW_FIXTURE_ASSET", "w5uxh_k6kx_hf_qrq_45s_bp700.wav")
 
 EXPECTED_MARKERS = ("POWER", "SUPPLY", "KEYER")
 
@@ -36,12 +36,15 @@ def _download(url: str, dest: Path) -> Path:
 
 
 @pytest.mark.real_audio
-def test_download_and_decode_w5uxh_k6kx(tmp_path, monkeypatch):
-    """GitHub Release → decode LIVE HF QRQ QSO (W5UXH & K6KX)."""
+def test_download_and_decode_w5uxh_k6kx(tmp_path):
+    """GitHub Release → decode LIVE HF QRQ QSO (W5UXH & K6KX).
+
+    Default asset is a 45 s / 16 kHz excerpt band-passed around ~700 Hz
+    (the on-air CW tone). Full m4a is also on the same release tag.
+    """
     cache = Path(os.environ.get("CW_FIXTURE_CACHE", tmp_path / "fixtures"))
     path = _download(_asset_url(ASSET), cache / ASSET)
 
-    # Full m4a needs ffmpeg; wav does not.
     if path.suffix.lower() in {".m4a", ".mp3", ".mp4"}:
         import shutil
 
@@ -54,13 +57,14 @@ def test_download_and_decode_w5uxh_k6kx(tmp_path, monkeypatch):
     text = (result.get("text") or "").upper()
     alnum = re.sub(r"[^A-Z0-9]", "", text)
     wpm = float(result.get("wpm") or 0)
+    freq = float(result.get("freq") or 0)
 
-    print(f"[*] Decoded WPM={wpm:.1f} chars={len(alnum)}")
+    print(f"[*] Decoded WPM={wpm:.1f} freq={freq:.1f} chars={len(alnum)}")
     print(f"[*] Text preview: {text[:180]}")
 
-    assert len(alnum) >= 20, f"too little decoded text: {text!r}"
-    assert wpm >= 25, f"expected QRQ-ish speed, got WPM={wpm}"
-    # Soft content check: at least one known phrase fragment from this clip
+    assert len(alnum) >= 40, f"too little decoded text: {text!r}"
+    assert wpm >= 40, f"expected QRQ speed, got WPM={wpm}"
+    assert 500 <= freq <= 900, f"expected ~700 Hz tone, got {freq}"
     assert any(m in text for m in EXPECTED_MARKERS), (
         f"expected one of {EXPECTED_MARKERS} in decoded text, got: {text[:240]!r}"
     )
